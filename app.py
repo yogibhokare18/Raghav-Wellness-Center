@@ -92,6 +92,15 @@ def init_db():
     cursor.close()
     conn.close()
 
+# Initialize the schema when the app is imported by Gunicorn/Render as well
+# as when it is run locally. The target database must already exist.
+try:
+    init_db()
+    print("Database tables checked/created successfully.")
+except Error as exc:
+    print("Database initialization failed:", exc)
+    print("Check DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, and DB_NAME in Render.")
+
 @app.route("/")
 def home():
     conn = get_db_connection()
@@ -314,11 +323,4 @@ def admin_logout():
     return redirect(url_for("home"))
 
 if __name__ == "__main__":
-    # Create tables only after the database itself has been created.
-    try:
-        init_db()
-        print("Database tables checked/created successfully.")
-    except Error as exc:
-        print("Database connection failed:", exc)
-        print("Check database.sql and DB_CONFIG / environment variables.")
     app.run(debug=True)
