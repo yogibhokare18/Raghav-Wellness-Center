@@ -1,0 +1,5 @@
+{% extends "base.html" %}
+{% block title %}Admin Login | Wellness Center{% endblock %}
+{% block content %}
+<section class="admin-login-wrap"><div class="admin-login-art"><div class="admin-lock">✦</div><p class="eyebrow">STAFF ACCESS</p><h1>Welcome back.</h1><p>Manage appointments, services, and client registrations from one place.</p></div><div class="form-card"><h2>Admin login</h2><p class="muted">Use the admin account configured for this project.</p><form method="post" action="{{ url_for('admin_login') }}"><label for="username">Username</label><input id="username" name="username" required autocomplete="username"><label for="password">Password</label><input id="password" name="password" type="password" required autocomplete="current-password"><button class="btn btn-full" type="submit">Sign in securely →</button></form></div></section>
+{% endblock %}

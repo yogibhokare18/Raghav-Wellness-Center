@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard | Wellness Center{% endblock %}
+{% block content %}
+<section class="admin-top"><div><p class="eyebrow">MANAGEMENT CONSOLE</p><h1>Good day, {{ session.get('admin_username','Admin') }}.</h1><p class="muted">Here is the latest activity at your wellness center.</p></div><a class="btn btn-small" href="{{ url_for('admin_logout') }}">Log out</a></section>
+<section class="stats-grid"><article class="stat-card"><span>Registered clients</span><strong>{{ total_clients }}</strong><small>All client records</small></article><article class="stat-card"><span>Pending appointments</span><strong>{{ pending_appointments }}</strong><small>Awaiting review</small></article><article class="stat-card"><span>Active services</span><strong>{{ active_services }}</strong><small>Currently bookable</small></article></section>
+<section class="admin-actions"><a class="admin-action" href="{{ url_for('admin_clients') }}">♙ Manage clients <span>→</span></a><a class="admin-action" href="{{ url_for('admin_services') }}">✧ Manage services <span>→</span></a></section>
+<section class="table-panel"><div class="section-heading"><div><p class="eyebrow">SCHEDULE</p><h2>Appointment requests</h2></div><span class="muted">Latest 100</span></div>
+<div class="table-scroll"><table><thead><tr><th>Client</th><th>Service</th><th>Date & time</th><th>Contact</th><th>Status</th><th>Update</th></tr></thead><tbody>
+{% for a in appointments %}<tr><td><strong>{{ a.full_name }}</strong><small>#{{ a.id }}</small></td><td>{{ a.service_name }}</td><td>{{ a.appointment_date }}<small>{{ a.appointment_time }}</small></td><td>{{ a.email }}<small>{{ a.phone }}</small></td><td><span class="status status-{{ a.status|lower }}">{{ a.status }}</span></td><td><form class="inline-form" method="post" action="{{ url_for('update_appointment_status', appointment_id=a.id) }}"><select name="status" aria-label="Appointment status">{% for s in ['Pending','Confirmed','Completed','Cancelled'] %}<option {% if s == a.status %}selected{% endif %}>{{ s }}</option>{% endfor %}</select><button class="btn btn-xs" type="submit">Save</button></form></td></tr>
+{% else %}<tr><td colspan="6" class="empty-state">No appointment requests yet.</td></tr>{% endfor %}
+</tbody></table></div></section>
+{% endblock %}

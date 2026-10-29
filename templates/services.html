@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Services | Wellness Center{% endblock %}
+{% block content %}
+<section class="page-intro"><p class="eyebrow">OUR SERVICES</p><h1>Find your path to wellbeing.</h1><p>Explore our available wellness sessions and choose the one that suits your goals.</p></section>
+<section class="service-grid service-grid-page">
+{% for service in services %}
+<article class="service-card"><div class="service-icon">{% if loop.index == 1 %}☼{% elif loop.index == 2 %}❋{% else %}♡{% endif %}</div><h3>{{ service.name }}</h3><p>{{ service.description }}</p><div class="service-meta"><span>{{ service.duration_minutes }} minutes</span><strong>₹{{ "%.2f"|format(service.price) }}</strong></div><a class="btn btn-small" href="{{ url_for('book_appointment', service_id=service.id) }}">Book now →</a></article>
+{% else %}<p>No services available.</p>{% endfor %}
+</section>
+{% endblock %}

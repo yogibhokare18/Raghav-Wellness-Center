@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Book Appointment | Raghav Wellness Center{% endblock %}
+{% block content %}
+<section class="page-intro"><p class="eyebrow">MAKE TIME FOR YOU</p><h1>Book an appointment.</h1><p>Send a request and our team will review your preferred date and time.</p></section>
+<section class="form-card appointment-card"><form method="post" action="{{ url_for('book_appointment') }}">
+<div class="form-row"><div><label for="full_name">Full name *</label><input id="full_name" name="full_name" required autocomplete="name" value="{{ request.form.get('full_name','') }}"></div><div><label for="email">Email *</label><input id="email" name="email" type="email" required autocomplete="email" value="{{ request.args.get('email', request.form.get('email','')) }}"></div></div>
+<label for="phone">Phone number *</label><input id="phone" name="phone" required autocomplete="tel" value="{{ request.form.get('phone','') }}">
+<label for="service_id">Choose a service *</label>
+
+<select id="service_id" name="service_id" required>
+    <option value="">Select a service</option>
+
+    {% for service in services %}
+        <option
+            value="{{ service.id }}"
+            {% if request.args.get('service_id', '')|string == service.id|string
+               or request.form.get('service_id', '')|string == service.id|string %}
+                selected
+            {% endif %}
+        >
+            {{ service.name }} — ₹{{ "%.2f"|format(service.price) }}
+            ({{ service.duration_minutes }} min)
+        </option>
+    {% endfor %}
+</select>
+<div class="form-row"><div><label for="appointment_date">Preferred date *</label><input id="appointment_date" name="appointment_date" type="date" min="{{ today }}" required value="{{ request.form.get('appointment_date','') }}"></div><div><label for="appointment_time">Preferred time *</label><input id="appointment_time" name="appointment_time" type="time" required value="{{ request.form.get('appointment_time','') }}"></div></div>
+<label for="notes">Notes (optional)</label><textarea id="notes" name="notes" rows="4" maxlength="500" placeholder="Share any scheduling details. Avoid including sensitive medical information.">{{ request.form.get('notes','') }}</textarea>
+<button class="btn btn-full" type="submit">Request appointment →</button>
+</form></section>
+{% endblock %}

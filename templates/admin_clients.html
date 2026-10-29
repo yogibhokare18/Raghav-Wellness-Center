@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% block title %}Clients | Wellness Center{% endblock %}
+{% block content %}
+<section class="admin-top"><div><p class="eyebrow">CLIENT DIRECTORY</p><h1>Registered clients</h1><p class="muted">Keep client details private and accessible only to authorised staff.</p></div><a class="btn btn-small" href="{{ url_for('admin_dashboard') }}">← Dashboard</a></section>
+<section class="table-panel"><div class="table-scroll"><table><thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Gender</th><th>DOB</th><th>Address</th><th>Registered</th></tr></thead><tbody>{% for c in clients %}<tr><td>{{ c.full_name }}</td><td>{{ c.email }}</td><td>{{ c.phone }}</td><td>{{ c.gender or '—' }}</td><td>{{ c.dob or '—' }}</td><td>{{ c.address or '—' }}</td><td>{{ c.created_at }}</td></tr>{% else %}<tr><td colspan="7" class="empty-state">No registered clients yet.</td></tr>{% endfor %}</tbody></table></div></section>
+{% endblock %}
